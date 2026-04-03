@@ -1,0 +1,29 @@
+function [ w, rect ] = setWindow( debug )
+%open psychtoolbox and set up screen for experiment
+resolution = [];
+if debug    
+    resolution = [1 1 1920 1200];
+    %PsychDebugWindowConfiguration()     
+end
+
+
+% Run tests in experiment, skip during debugging
+Screen('Preference','SkipSyncTests', 1)
+screens = Screen('Screens');
+screenNumber = max(screens);
+doublebuffer = 1;
+
+% Open screen with grey background
+[w, rect] = Screen('OpenWindow', screenNumber,...
+    [255/2,255/2,255/2],resolution, 32, doublebuffer+1);
+
+% Set useful paramaters
+KbName('UnifyKeyNames');
+AssertOpenGL;
+PsychVideoDelayLoop('SetAbortKeys', KbName('Escape'));
+HideCursor();
+Priority(MaxPriority(w));
+Screen('BlendFunction', w, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+end
+
